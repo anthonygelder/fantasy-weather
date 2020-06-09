@@ -4,33 +4,32 @@ class Game extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            // zip: ''
+            weather: {}
         }
     }
     
     componentDidMount() {
-        // this.setState({zip:this.props.park.addresses[0].postalCode})
         this.getWeather()
     }
 
     getWeather() {
-        fetch(`http://api.weatherstack.com/current?access_key=11303f6cbfab1479a50aaffe71e8c663&query=${this.props.park.addresses[0].postalCode}`, {
+        fetch(`http://api.weatherstack.com/current?access_key=11303f6cbfab1479a50aaffe71e8c663&query=${this.props.park.addresses[0].postalCode}&units=f`, {
             method: 'GET'                       
         })
-        // .then(response => console.log(response))
         .then(response => response.json())
         .then(data => {
-            console.log('data',data)
+            this.setState({weather:data.current})
         })  
     }
 
     render() {
-        // console.log(this.state.zip)
-
+        const { park } = this.props
+        const temp = this.state.weather ? <p>Temp: {this.state.weather.temperature}</p> : ''
         return (
         <>
             <div className="park">
-                game
+                <h2>{park.fullName}</h2>
+                {temp}
             </div>
         </>
         );
