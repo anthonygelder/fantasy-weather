@@ -1,3 +1,35 @@
+.app {
+  
+}
+
+.parks {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 .park {
   border: solid 1px black;
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.weather {
+  display: flex;
+  align-items: center;
+
+}
+
+ul {
+  list-style-type: none;
+}
+
+form {
+  display: flex;
+  height: 20px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
 }
