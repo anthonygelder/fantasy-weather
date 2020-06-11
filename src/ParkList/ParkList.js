@@ -11,12 +11,12 @@ class ParkList extends Component {
     }
 
     onStateChanged(state){
-        this.setState({state: state})
+        this.setState({stateCode: state})
     }
 
     handleSubmit(e) {
         e.preventDefault();
-        fetch(`https://developer.nps.gov/api/v1/parks?stateCode=${this.state.stateCode}&limit=6&api_key=KOz6osfxerUU9Zy8fre56gMy4fFVTcnQbkRcaIhm`, {
+        fetch(`https://developer.nps.gov/api/v1/parks?stateCode=${this.state.stateCode}&limit=2&api_key=KOz6osfxerUU9Zy8fre56gMy4fFVTcnQbkRcaIhm`, {
             method: 'GET'
         })
         .then(response => response.json())

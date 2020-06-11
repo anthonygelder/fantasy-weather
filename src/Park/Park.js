@@ -4,7 +4,8 @@ class Game extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            weather: {}
+            weather: {},
+            park: this.props.park
         }
     }
     
@@ -13,6 +14,7 @@ class Game extends Component {
     }
 
     getWeather() {
+        // console.log(this.park.props)
         fetch(`http://api.weatherstack.com/current?access_key=11303f6cbfab1479a50aaffe71e8c663&query=${this.props.park.addresses[0].postalCode}&units=f`, {
             method: 'GET'                       
         })
@@ -20,6 +22,21 @@ class Game extends Component {
         .then(data => {
             console.log(data)
             this.setState({weather:data.current})
+        })  
+    }
+
+    addPark = () => {
+        
+        fetch(`https://us-central1-parks-d8e0a.cloudfunctions.net/addPark?name=${this.state.park.name}&type=${this.state.park.designation}`, {
+            // method: 'GET',
+            // headers: {
+            //     'Access-Control-Allow-Origin': '*'
+            // }                       
+        })
+        .then(response => response.json())
+        .then(res => {
+            console.log(res)
+            // this.setState({weather:data.current})
         })  
     }
 
@@ -49,6 +66,7 @@ class Game extends Component {
                 <h2>{park.name}</h2>
                 <h2>{park.designation}</h2>
                 {this.renderWeather()}
+                <button onClick={this.addPark}></button>
             </div>
         </>
         );
