@@ -18,6 +18,10 @@
   margin: 10px 0;
 }
 
+.park:hover {
+  background-color: cornsilk;
+}
+
 .weather {
   display: flex;
   align-items: center;
