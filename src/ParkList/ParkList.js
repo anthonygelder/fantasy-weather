@@ -37,7 +37,7 @@ class ParkList extends Component {
         return (
             <>
                 <Link to='/addPark'>
-                    <button>
+                    <button style={{margin: "10px"}}>
                         Add Park
                     </button>    
                 </Link>

@@ -7,6 +7,7 @@
 .parks {
   display: flex;
   justify-content: space-evenly;
+  flex-wrap: wrap
 }
 
 .park {
@@ -18,18 +19,38 @@
   margin: 10px 0;
 }
 
-.park:hover {
+.container {
+  margin: 10px;
+  width: 80%;
+  height: 80%;
+  text-align: center;
+}
+
+.parkImg {
+  max-width:100%;
+  max-height:100%;
+  vertical-align: middle;
+  top: 50%;
+}
+
+.parkHov:hover {
   background-color: cornsilk;
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
 .weather {
   display: flex;
+  flex-direction: column;
   align-items: center;
-
 }
 
 ul {
   list-style-type: none;
+  margin-right: 20px;
+}
+
+li:first-letter {
+  text-transform:capitalize;
 }
 
 form {
@@ -38,4 +59,40 @@ form {
   justify-content: center;
   align-items: center;
   margin-top: 15px;
+}
+
+.parkDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 50px 0;
+}
+
+.addPark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+p {
+  width: 80%;
+}
+
+button {
+  padding: 5px 10px;
+}
+
+.parkDetails {
+  margin-bottom: 50px;
+}
+
+select {
+  margin-right: 10px;
+  padding: 5px 10px;
 }
