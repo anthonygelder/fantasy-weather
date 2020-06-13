@@ -10,4 +10,6 @@ A lot of ways to go with this app such as adding more search options, 7 day weat
 
 ### Tech
 Front end: React
-Back end: Firebase
+Back end: Firebase 
+
+Back-end repo: https://github.com/anthonygelder/parks-firebase-functions
