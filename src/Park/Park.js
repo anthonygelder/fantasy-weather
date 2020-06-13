@@ -15,13 +15,13 @@ class Game extends Component {
     }
 
     getWeather() {
-        fetch(`http://api.openweathermap.org/data/2.5/weather?zip=${this.props.park.zip}&units=imperial&appid=2d0ab90589e7e09272277f79be9bfa53`, {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${this.props.park.zip}&units=imperial&appid=${process.env.REACT_APP_WEATHER_API_KEY}`, {
             method: 'GET'                       
         })
         .then(response => response.json())
         .then(data => {
             this.setState({weather:data})
-        })  
+        })
     }
 
     renderWeather() {
@@ -53,7 +53,7 @@ class Game extends Component {
                         <h3>{park.type}</h3>
                         {this.renderWeather()}
                         <Link to={{
-                            pathname: `/park/${park.uid}`,
+                            pathname: `/parks/${park.uid}`,
                             state: {
                                 weather: this.state.weather
                             }
@@ -66,11 +66,12 @@ class Game extends Component {
                 </>
             )
         } else {
+            const img = park.images[0] ? <img className="parkImg" src={park.images[0].url} alt={park.name}/> : <p>No picture</p>
             return (
                 <>
                     <div className="park parkHov" onClick={() => {this.props.selectPark(park)}}>
                         <div className="container">
-                            <img className="parkImg" src={park.images[0].url} alt={park.name}/>
+                            {img}
                         </div>
                         <h3>{park.name}</h3>
                         <h3>{park.designation}</h3>

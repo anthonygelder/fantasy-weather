@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
+const { API_ENDPOINT } = require('../config')
 
 class ParkDetails extends Component {
     constructor(props) {
@@ -10,7 +11,7 @@ class ParkDetails extends Component {
     }
 
     componentDidMount() {
-        fetch(`http://localhost:5001/parks-d8e0a/us-central1/getParkById?id=${this.props.routeProps.match.params.park_id}`)
+        fetch(`${API_ENDPOINT}/getParkById?id=${this.props.routeProps.match.params.park_id}`)
             .then(response => response.json())
             .then((data) => {
                 this.setState({park:data})
@@ -18,11 +19,11 @@ class ParkDetails extends Component {
     }
     
     deletePark = () => {
-        fetch(`http://localhost:5001/parks-d8e0a/us-central1/deletePark?id=${this.props.routeProps.match.params.park_id}`)
-        .then(response => response.json())
-        .then(() => {
-            this.props.routeProps.history.push('/')
-        })
+        fetch(`${API_ENDPOINT}/deletePark?id=${this.props.routeProps.match.params.park_id}`)
+            .then(response => response.json())
+            .then(() => {
+                this.props.routeProps.history.push('/parks')
+            })
     }
 
     renderWeather() {
@@ -57,7 +58,7 @@ class ParkDetails extends Component {
                 <p>{park.description}</p>
                 {this.renderWeather()}
                 <div>
-                    <Link to="/">
+                    <Link to="/parks">
                         <button>Back</button>    
                     </Link>
                     <button onClick={this.deletePark}>Delete</button>

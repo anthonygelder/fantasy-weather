@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import Park from '../Park/Park.js'
 import {Link} from 'react-router-dom'
+const { API_ENDPOINT } = require('../config')
 
 class ParkList extends Component {
     constructor(props) {
@@ -25,7 +26,7 @@ class ParkList extends Component {
     }
 
     componentDidMount() {
-        fetch(`http://localhost:5001/parks-d8e0a/us-central1/getParks`, {
+        fetch(`${API_ENDPOINT}/getParks`, {
         })
         .then(response => response.json())
         .then((data) => {
@@ -37,9 +38,7 @@ class ParkList extends Component {
         return (
             <>
                 <Link to='/addPark'>
-                    <button style={{margin: "10px"}}>
-                        Add Park
-                    </button>    
+                    <button style={{margin: "20px"}}>Add Park</button>    
                 </Link>
                 <div className="parks">
                     {this.renderParks()}

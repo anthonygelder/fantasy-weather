@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
 import Park from '../Park/Park.js'
 import {Link} from 'react-router-dom'
+const { API_ENDPOINT } = require('../config')
 
 class ParkList extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            laoding: false,
             stateCode: '',
             parks: '',
             park: {
@@ -30,23 +32,24 @@ class ParkList extends Component {
         this.searchParks()
     }
 
+
     searchParks() {
-        fetch(`https://developer.nps.gov/api/v1/parks?stateCode=${this.state.stateCode}&limit=2&api_key=KOz6osfxerUU9Zy8fre56gMy4fFVTcnQbkRcaIhm`, {
+        this.setState({ loading: true })
+        fetch(`https://developer.nps.gov/api/v1/parks?stateCode=${this.state.stateCode}&api_key=${process.env.REACT_APP_PARKS_API_KEY}`, {
             method: 'GET'
         })
         .then(response => response.json())
         .then((data) => {
-            this.setState({parks:data.data})
+            console.log(data)
+            this.setState({parks:data.data,loading:false})
         })
     }
 
     addPark = (park) => {
-        fetch(`http://localhost:5001/parks-d8e0a/us-central1/addPark?name=${this.state.park.name}&type=${this.state.park.type}&id=${this.state.park.id}&zip=${this.state.park.zip}&lat=${this.state.park.lat}&lng=${this.state.park.lng}&description=${this.state.park.description}&img=${this.state.park.img}`, {
-        })
+        fetch(`${API_ENDPOINT}/addPark?name=${this.state.park.name}&type=${this.state.park.type}&id=${this.state.park.id}&zip=${this.state.park.zip}&lat=${this.state.park.lat}&lng=${this.state.park.lng}&description=${this.state.park.description}&img=${this.state.park.img}`)
         .then(response => response.json())
         .then(res => {
-            this.props.routeProps.history.push('/')
-
+            this.props.routeProps.history.push('/parks')
         })  
     }
 
@@ -75,7 +78,7 @@ class ParkList extends Component {
                 lat: park.latitude,
                 lng: park.longitude,
                 description: park.description,
-                img: park.images[0].url
+                img: park.images[0].url 
             }
         })
       }
@@ -83,14 +86,14 @@ class ParkList extends Component {
     render() {
         return (
             <>  
-                <Link to="/">
-                    <button>Back</button>    
+                <Link to="/parks">
+                    <button style={{margin: "20px"}}>Back</button>    
                 </Link>
                 <form onSubmit={e => this.handleSubmit(e)}>
                     <h2>Select State</h2>
                     <div>
                         <select required onChange={e => this.onStateChanged(e.target.value)}>
-                            <option value="" disabled selected>State</option>
+                            <option value="" disabled defaultValue>State</option>
                             <option value="AL">AL</option>
                             <option value="AK">AK</option>
                             <option value="AR">AR</option>	
@@ -145,6 +148,7 @@ class ParkList extends Component {
                         </select>	
                         <button type="submit">Search</button>
                     </div>
+                    {this.state.loading ? <p>Getting parks...</p> : null}
                     {this.state.parks ? <p>Click park to select</p> : null}
                 </form>
                 <div className="parks">
