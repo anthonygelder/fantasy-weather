@@ -7,6 +7,7 @@ class ParkList extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            loading: false,
             stateCode: '',
             parks: []
         }
@@ -26,11 +27,12 @@ class ParkList extends Component {
     }
 
     componentDidMount() {
+        this.setState({ loading: true })
         fetch(`${API_ENDPOINT}/getParks`, {
         })
         .then(response => response.json())
         .then((data) => {
-            this.setState({parks:data})
+            this.setState({parks:data,loading:false})
         })
     }
 
@@ -40,6 +42,7 @@ class ParkList extends Component {
                 <Link to='/addPark'>
                     <button style={{margin: "20px"}}>Add Park</button>    
                 </Link>
+                {this.state.loading ? <p>Getting saved parks...</p> : null}
                 <div className="parks">
                     {this.renderParks()}
                 </div>

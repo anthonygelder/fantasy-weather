@@ -7,7 +7,7 @@ class ParkList extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            laoding: false,
+            loading: false,
             stateCode: '',
             parks: '',
             park: {
@@ -34,8 +34,8 @@ class ParkList extends Component {
 
 
     searchParks() {
-        this.setState({ loading: true })
-        fetch(`https://developer.nps.gov/api/v1/parks?stateCode=${this.state.stateCode}&api_key=${process.env.REACT_APP_PARKS_API_KEY}`, {
+        this.setState({ loading: true,parks: '' })
+        fetch(`https://developer.nps.gov/api/v1/parks?stateCode=${this.state.stateCode}&api_key=${process.env.REACT_APP_PARKS_API_KEY}&limit=8`, {
             method: 'GET'
         })
         .then(response => response.json())
