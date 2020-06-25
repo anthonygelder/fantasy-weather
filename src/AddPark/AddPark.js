@@ -7,6 +7,7 @@ class ParkList extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            adding: false,
             loading: false,
             stateCode: '',
             parks: '',
@@ -33,22 +34,34 @@ class ParkList extends Component {
     }
 
 
+    // searchParks() {
+    //     this.setState({ loading: true,parks: '' })
+    //     fetch(`https://developer.nps.gov/api/v1/parks?stateCode=${this.state.stateCode}&api_key=${process.env.REACT_APP_PARKS_API_KEY}&limit=8`, {
+    //         method: 'GET'
+    //     })
+    //     .then(response => response.json())
+    //     .then((data) => {
+    //         this.setState({parks:data.data,loading:false})
+    //     })
+    // }
+
     searchParks() {
         this.setState({ loading: true,parks: '' })
-        fetch(`https://developer.nps.gov/api/v1/parks?stateCode=${this.state.stateCode}&api_key=${process.env.REACT_APP_PARKS_API_KEY}&limit=8`, {
+        fetch(`https://developer.nps.gov/api/v1/parks?q=${this.state.stateCode}&api_key=${process.env.REACT_APP_PARKS_API_KEY}&limit=8`, {
             method: 'GET'
         })
         .then(response => response.json())
         .then((data) => {
-            console.log(data)
             this.setState({parks:data.data,loading:false})
         })
     }
 
     addPark = (park) => {
+        this.setState({ adding: true })
         fetch(`${API_ENDPOINT}/addPark?name=${this.state.park.name}&type=${this.state.park.type}&id=${this.state.park.id}&zip=${this.state.park.zip}&lat=${this.state.park.lat}&lng=${this.state.park.lng}&description=${this.state.park.description}&img=${this.state.park.img}`)
         .then(response => response.json())
         .then(res => {
+            this.setState({ adding: false })
             this.props.routeProps.history.push('/parks')
         })  
     }
@@ -71,7 +84,7 @@ class ParkList extends Component {
         this.setState({ 
             parks: '',
             park: {
-                id: park.id,
+                id: park.parkCode,
                 name: park.name,
                 type: park.designation,
                 zip: park.addresses[0].postalCode,
@@ -92,8 +105,9 @@ class ParkList extends Component {
                 <form onSubmit={e => this.handleSubmit(e)}>
                     <h2>Select State</h2>
                     <div>
+                        <input required onChange={e => this.onStateChanged(e.target.value)} />
                         <select required onChange={e => this.onStateChanged(e.target.value)}>
-                            <option value="" disabled defaultValue>State</option>
+                            <option value="" disabled selected>State</option>
                             <option value="AL">AL</option>
                             <option value="AK">AK</option>
                             <option value="AR">AR</option>	
@@ -145,7 +159,7 @@ class ParkList extends Component {
                             <option value="WI">WI</option>	
                             <option value="WV">WV</option>
                             <option value="WY">WY</option>
-                        </select>	
+                        </select>
                         <button type="submit">Search</button>
                     </div>
                     {this.state.loading ? <p>Getting parks...</p> : null}
@@ -159,6 +173,8 @@ class ParkList extends Component {
                     <p><b>{this.state.park.name}</b></p>
                     <button onClick={this.addPark}>Add</button>
                 </> : null}
+                {this.state.adding ? <p>Adding park...</p> : null}
+
             </>
         );
     }
