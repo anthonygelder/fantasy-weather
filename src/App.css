@@ -55,23 +55,17 @@ li:first-letter {
 
 form {
   display: flex;
+  flex-direction: column;
   height: 20px;
   justify-content: center;
   align-items: center;
-  margin-top: 15px;
+  margin: 50px 0;
 }
 
 .parkDetails {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 50px 0;
 }
 
 .addPark {

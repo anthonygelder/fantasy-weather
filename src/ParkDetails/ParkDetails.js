@@ -27,6 +27,8 @@ class ParkDetails extends Component {
     }
 
     renderWeather() {
+        console.log(this.state.park)
+
         const {weather} = this.props.routeProps.location.state
         if(weather) {
             return (

@@ -10,7 +10,9 @@ class ParkList extends Component {
             adding: false,
             loading: false,
             stateCode: '',
+            searchTerm: '',
             parks: '',
+            error: '',
             park: {
                 id: '',
                 name: '',
@@ -19,7 +21,7 @@ class ParkList extends Component {
                 lat: '',
                 lng: '',
                 description: '',
-                img: ''
+                img: []
             }
         }
     }
@@ -28,30 +30,32 @@ class ParkList extends Component {
         this.setState({stateCode: state})
     }
 
+    onWordChanged(word){
+        this.setState({searchTerm: word})
+    }
+
     handleSubmit(e) {
         e.preventDefault();
         this.searchParks()
     }
 
-
-    // searchParks() {
-    //     this.setState({ loading: true,parks: '' })
-    //     fetch(`https://developer.nps.gov/api/v1/parks?stateCode=${this.state.stateCode}&api_key=${process.env.REACT_APP_PARKS_API_KEY}&limit=8`, {
-    //         method: 'GET'
-    //     })
-    //     .then(response => response.json())
-    //     .then((data) => {
-    //         this.setState({parks:data.data,loading:false})
-    //     })
-    // }
-
     searchParks() {
-        this.setState({ loading: true,parks: '' })
-        fetch(`https://developer.nps.gov/api/v1/parks?q=${this.state.stateCode}&api_key=${process.env.REACT_APP_PARKS_API_KEY}&limit=8`, {
+        let search;
+        if (this.state.searchTerm) {
+            search = `q=${this.state.searchTerm}`
+        } else if (this.state.stateCode){
+            search = `stateCode=${this.state.stateCode}`
+        } else {
+            this.setState({error: 'Must enter keyword or select state.'})
+            return
+        }
+        this.setState({ loading: true,parks: '',error: '' })
+        fetch(`https://developer.nps.gov/api/v1/parks?${search}&api_key=${process.env.REACT_APP_PARKS_API_KEY}&limit=8`, {
             method: 'GET'
         })
         .then(response => response.json())
         .then((data) => {
+            console.log(data)
             this.setState({parks:data.data,loading:false})
         })
     }
@@ -103,10 +107,14 @@ class ParkList extends Component {
                     <button style={{margin: "20px"}}>Back</button>    
                 </Link>
                 <form onSubmit={e => this.handleSubmit(e)}>
-                    <h2>Select State</h2>
+                    <h2>National Park Search</h2>
+                    <h4>Search by keyword or state</h4>
                     <div>
-                        <input required onChange={e => this.onStateChanged(e.target.value)} />
-                        <select required onChange={e => this.onStateChanged(e.target.value)}>
+                        <label htmlFor="keyword">Keyword:</label>
+                        <input id="keyword" onChange={e => this.onWordChanged(e.target.value)} />
+                        <label> - or - </label>
+                        <label htmlFor="state">State:</label>
+                        <select id="state" onChange={e => this.onStateChanged(e.target.value)}>
                             <option value="" disabled selected>State</option>
                             <option value="AL">AL</option>
                             <option value="AK">AK</option>
@@ -162,8 +170,9 @@ class ParkList extends Component {
                         </select>
                         <button type="submit">Search</button>
                     </div>
+                    {this.state.error ? <p>{this.state.error}</p> : null}
                     {this.state.loading ? <p>Getting parks...</p> : null}
-                    {this.state.parks ? <p>Click park to select</p> : null}
+                    {this.state.parks.length < 0 ? <p>Click park to select</p> : null}
                 </form>
                 <div className="parks">
                     {this.renderParks()}
@@ -174,7 +183,6 @@ class ParkList extends Component {
                     <button onClick={this.addPark}>Add</button>
                 </> : null}
                 {this.state.adding ? <p>Adding park...</p> : null}
-
             </>
         );
     }
