@@ -15,7 +15,7 @@ class Game extends Component {
     }
 
     getWeather() {
-        fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${this.props.park.zip}&units=imperial&appid=${process.env.REACT_APP_WEATHER_API_KEY}`, {
+        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${this.props.park.lat}&lon=${this.props.park.lng}&units=imperial&appid=${process.env.REACT_APP_WEATHER_API_KEY}`, {
             method: 'GET'                       
         })
         .then(response => response.json())

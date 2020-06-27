@@ -41,7 +41,10 @@ class ParkList extends Component {
 
     searchParks() {
         let search;
-        if (this.state.searchTerm) {
+        if (this.state.searchTerm && this.state.stateCode) {
+            this.setState({error: 'Must enter either keyword or select state.',stateCode: '',searchTerm: ''})
+            return
+        } else if (this.state.searchTerm) {
             search = `q=${this.state.searchTerm}`
         } else if (this.state.stateCode){
             search = `stateCode=${this.state.stateCode}`
@@ -111,10 +114,10 @@ class ParkList extends Component {
                     <h4>Search by keyword or state</h4>
                     <div>
                         <label htmlFor="keyword">Keyword:</label>
-                        <input id="keyword" onChange={e => this.onWordChanged(e.target.value)} />
+                        <input id="keyword" value={this.state.searchTerm} onChange={e => this.onWordChanged(e.target.value)} />
                         <label> - or - </label>
                         <label htmlFor="state">State:</label>
-                        <select id="state" onChange={e => this.onStateChanged(e.target.value)}>
+                        <select id="state" value={this.state.stateCode} onChange={e => this.onStateChanged(e.target.value)}>
                             <option value="" disabled selected>State</option>
                             <option value="AL">AL</option>
                             <option value="AK">AK</option>
@@ -178,10 +181,10 @@ class ParkList extends Component {
                     {this.renderParks()}
                 </div>
                 {this.state.park.id ? 
-                <>
-                    <p><b>{this.state.park.name}</b></p>
-                    <button onClick={this.addPark}>Add</button>
-                </> : null}
+                    <>
+                        <p><b>{this.state.park.name}</b></p>
+                        <button onClick={this.addPark}>Add</button>
+                    </> : null}
                 {this.state.adding ? <p>Adding park...</p> : null}
             </>
         );
