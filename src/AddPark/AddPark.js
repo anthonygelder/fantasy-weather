@@ -21,7 +21,8 @@ class ParkList extends Component {
                 lat: '',
                 lng: '',
                 description: '',
-                img: []
+                img: [],
+                url: ''
             }
         }
     }
@@ -65,7 +66,7 @@ class ParkList extends Component {
 
     addPark = (park) => {
         this.setState({ adding: true })
-        fetch(`${API_ENDPOINT}/addPark?name=${this.state.park.name}&type=${this.state.park.type}&id=${this.state.park.id}&zip=${this.state.park.zip}&lat=${this.state.park.lat}&lng=${this.state.park.lng}&description=${this.state.park.description}&img=${this.state.park.img}`)
+        fetch(`${API_ENDPOINT}/addPark?name=${this.state.park.name}&type=${this.state.park.type}&id=${this.state.park.id}&zip=${this.state.park.zip}&lat=${this.state.park.lat}&lng=${this.state.park.lng}&description=${this.state.park.description}&img=${this.state.park.img}&url=${this.state.park.url}`)
         .then(response => response.json())
         .then(res => {
             this.setState({ adding: false })
@@ -98,7 +99,8 @@ class ParkList extends Component {
                 lat: park.latitude,
                 lng: park.longitude,
                 description: park.description,
-                img: park.images[0].url 
+                img: park.images[0].url,
+                url: park.url
             }
         })
       }

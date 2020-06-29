@@ -50,6 +50,7 @@ class ParkDetails extends Component {
 
     render() {
         const { park } = this.state
+        console.log(park)
         return (
             <div className="parkDetails">
                 <div className="container">
@@ -57,6 +58,8 @@ class ParkDetails extends Component {
                 </div>
                 <h2>{park.name}</h2>
                 <h2>{park.type}</h2>
+                <a href={`https://www.google.com/maps/search/?api=1&query=${park.name}`} target="_blank" rel="noopener noreferrer">Map</a>
+                <a href={`${park.url}`} target="_blank" rel="noopener noreferrer">NPS Website</a>
                 <p>{park.description}</p>
                 {this.renderWeather()}
                 <div>
